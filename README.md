@@ -1,11 +1,9 @@
 
 ## Getting Started
 
-For detailed setup instructions, refer to the [Installation Guide](./INSTALLATION.md).
-
 ```bash
-git clone https://github.com/ibelick/nim.git
-cd nim
+git clone https://github.com/PraneethV-cmd/praneeth-portfolio.git
+cd praneeth-portfolio
 npm install
 npm run dev
 ```

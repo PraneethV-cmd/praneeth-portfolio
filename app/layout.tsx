@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { Header } from './header'
 import { Footer } from './footer'
+import { Grain } from '@/components/ui/grain'
 import { ThemeProvider } from 'next-themes'
 
 export const viewport: Viewport = {
@@ -23,14 +25,24 @@ export const metadata: Metadata = {
   description:  'personal website',
 };
 
-const geist = Geist({
-  variable: '--font-geist',
-  subsets: ['latin'],
-})
-
+// Geist Mono is kept only for the mono surfaces (buttons + project boxes).
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+})
+
+// Bagnard — a niche OFL serif by Sebastien Sanfilippo, inspired by the graffiti
+// of a Napoleonic-war prisoner. Self-hosted from public/fonts (single weight).
+const bagnard = localFont({
+  src: [
+    {
+      path: '../public/fonts/Bagnard.otf',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-bagnard',
+  display: 'swap',
 })
 
 export default function RootLayout({
@@ -41,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geist.variable} ${geistMono.variable} bg-white tracking-tight antialiased dark:bg-zinc-950`}
+        className={`${geistMono.variable} ${bagnard.variable} bg-white tracking-tight antialiased dark:bg-zinc-950`}
       >
         <ThemeProvider
           enableSystem={true}
@@ -49,7 +61,8 @@ export default function RootLayout({
           storageKey="theme"
           defaultTheme="system"
         >
-          <div className="flex min-h-screen w-full flex-col font-[family-name:var(--font-inter-tight)]">
+          <Grain />
+          <div className="relative z-10 flex min-h-screen w-full flex-col font-[family-name:var(--font-bagnard)]">
             <div className="relative mx-auto w-full max-w-screen-sm flex-1 px-4 pt-20">
               <Header />
               {children}

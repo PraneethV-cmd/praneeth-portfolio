@@ -46,8 +46,19 @@ export function AnimatedBackground({
     }
   }, [defaultValue])
 
-  return Children.map(children, (child: any, index) => {
-    const id = child.props['data-id']
+  return Children.map(children, (child, index) => {
+    // Narrow the child to the props this component reads/writes (data-id,
+    // className, children) plus the interaction props cloneElement injects.
+    const item = child as ReactElement<{
+      'data-id': string
+      className?: string
+      children?: React.ReactNode
+      'data-checked'?: string
+      onClick?: () => void
+      onMouseEnter?: () => void
+      onMouseLeave?: () => void
+    }>
+    const id = item.props['data-id']
 
     const interactionProps = enableHover
       ? {
@@ -59,10 +70,10 @@ export function AnimatedBackground({
         }
 
     return cloneElement(
-      child,
+      item,
       {
         key: index,
-        className: cn('relative inline-flex', child.props.className),
+        className: cn('relative inline-flex', item.props.className),
         'data-checked': activeId === id ? 'true' : 'false',
         ...interactionProps,
       },
@@ -83,7 +94,7 @@ export function AnimatedBackground({
             />
           )}
         </AnimatePresence>
-        <div className="z-10">{child.props.children}</div>
+        <div className="z-10">{item.props.children}</div>
       </>,
     )
   })
